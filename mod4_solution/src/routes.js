@@ -31,19 +31,19 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
      }
   })
 
-  // Menu item list page
+  // Menu item list page*
   .state('items', {
     url: '/item-detail/{itemId}',
     templateUrl: 'src/menu/templates/main_itemdetails.template.html',
-    controller: "ItemsController as itemsDetail"
-    // resolve: {
-    //      items: ['MenuDataService', function (MenuDataService) {
-    //      return MenuDataService.getItemsForCategory({itemId})
-    //      .then(function (return_data){
-    //        return return_data.data;
-    //      });
-    //    }]
-    //  }
+    controller: "ItemsController as itemsDetail",
+    resolve: {
+         items: ['$stateParams','MenuDataService', function ($stateParams,MenuDataService) {
+         return MenuDataService.getItemsForCategory($stateParams.itemId)
+         .then(function (return_data){
+              return return_data.data;
+         });
+       }]
+     }
   });
 
 }
